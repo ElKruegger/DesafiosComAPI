@@ -48,7 +48,10 @@ using (HttpClient cliente = new HttpClient())
         //LinqFiltros.CidadesAgrupadasPorRegiao(ibge);
 
         //10 - Lista de cidades agrupadas por estado e região
-        LinqFiltros.FiltrarCidadesPorEstadoRegiao(ibge);
+        //LinqFiltros.FiltrarCidadesPorEstadoRegiao(ibge);
+
+        // Bonus - Lista de cidades agrupadas por estado e mesoregião e que a mesoregião comece com a letra "A" 
+        LinqFiltros.FiltrarCidadeMesoRegiaoComA(ibge);
 
     }
     catch (Exception ex)

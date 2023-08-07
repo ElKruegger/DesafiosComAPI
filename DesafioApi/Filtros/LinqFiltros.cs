@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using static DesafioApi.Modelos.IBGEObject;
@@ -109,7 +110,7 @@ internal class LinqFiltros
 
     //5 - Todas as cidades com nomes compostos
 
-    public static void FiltrarNomesCompostos(List<IBGEObject> ibge) 
+    public static void FiltrarNomesCompostos(List<IBGEObject> ibge)
     {
         var nomecomposto = ibge.Where(ibge => ibge.municipio.nome.Split(' ').Length == 2).Select(ibge => ibge.municipio.nome).Distinct().ToList();
 
@@ -169,12 +170,12 @@ internal class LinqFiltros
             {
                 Console.WriteLine($" - {municipios.nome}");
             }
-            
+
         }
     }
 
     //9 - Lista de cidades agrupadas por região
-    
+
     public static void CidadesAgrupadasPorRegiao(List<IBGEObject> ibge)
     {
         var municipiosporregiao = ibge.GroupBy(ibge => ibge.municipio.microrregiao.mesorregiao.UF.regiao.nome).Distinct().ToList();
@@ -197,23 +198,40 @@ internal class LinqFiltros
     {
         var cidadeEstadoRegiao = ibge.GroupBy(ibge => ibge.municipio.microrregiao.mesorregiao.UF.regiao.nome).Distinct().ToList();
 
-        Console.WriteLine(" Lista de municipios agrupados por estado e região");
-
-        foreach (var regiao in cidadeEstadoRegiao)
+        foreach (var regiaoEstado in cidadeEstadoRegiao)
         {
             Console.WriteLine();
-            Console.WriteLine($" regiao {regiao.Key}");
-            foreach (var estado in regiao)
-            {
-                Console.WriteLine($" Estado {estado.municipio.microrregiao.mesorregiao.UF.nome}");
+            Console.WriteLine($" - - - - - Região: {regiaoEstado.Key}");
+            Console.WriteLine($" - - - - - Estado: {regiaoEstado.Key}");
 
-                foreach(var municipio in estado.municipio.nome)
-                {
-                    Console.WriteLine($" municipio {municipio}");
-                }
+            foreach (var municipio in regiaoEstado)
+            {
+                Console.WriteLine($" - Município: {municipio.municipio.nome}");
             }
         }
     }
 
 
+    // Bonus - Lista de cidades agrupadas por estado e mesoregião e que a mesoregião comece com a letra "A" 
+
+
+    public static void FiltrarCidadeMesoRegiaoComA(List<IBGEObject> ibge)
+    {
+        char letraA = 'A';
+        var cidademesoregiao = ibge.GroupBy(ibge => ibge.municipio.microrregiao.mesorregiao.UF.nome).Where(grupo => grupo.Key.StartsWith(letraA)).Distinct().ToList();
+
+        foreach (var estadosMesoregiao in cidademesoregiao)
+        {
+            Console.WriteLine($" Estados - {estadosMesoregiao.Key}");
+            Console.WriteLine($" Mesoregioes - {estadosMesoregiao.Key.Contains(letraA)}");
+
+        }
+
+    }
+
+
+
+
 }
+
+
